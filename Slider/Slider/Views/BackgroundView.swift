@@ -12,6 +12,7 @@ struct BackgroundView: View {
     var body: some View {
         VStack {
             TopView(game: $game)
+            Spacer()
             BottomView(game: $game)
         }
         .padding()
@@ -35,8 +36,12 @@ struct TopView: View {
 struct NumberView: View {
     var title: String
     var text: String
+    
     var body: some View {
-        Color.gray.frame(width: 56.0, height: 56.0)
+        VStack(spacing: 5) {
+            LabelText(text: title.uppercased())
+            RoundRectTextView(text: text)
+        }
     }
 }
 

@@ -36,9 +36,21 @@ struct BigNumberText: View {
 struct SliderLabelText: View {
     var text: String
     var body: some View {
-        Text("1")
+        Text(text)
             .bold()
             .foregroundColor(Color("TextColor"))
+            .frame(width: 35.0)
+    }
+}
+
+struct LabelText: View {
+    var text: String
+    var body: some View {
+        Text(text)
+            .bold()
+            .foregroundColor(Color("TextColor"))
+            .kerning(1.5)
+            .font(.caption)
     }
 }
 
@@ -47,7 +59,8 @@ struct InstructionText_Previews: PreviewProvider {
         VStack {
             InstructionTextView(text: "🎯🎯🎯\nPut the Bullseye as close as you can to")
             BigNumberText(text: "999")
-            SliderLabelText(text:"1")
+            SliderLabelText(text:"99")
+            LabelText(text: "9")
         }
     }
 }
