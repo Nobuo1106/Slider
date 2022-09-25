@@ -14,48 +14,87 @@ struct ContentView: View {
     
     var body: some View {
         ZStack {
-            Color.purple
+            Color("BackgroundColor")
                 .ignoresSafeArea()
             VStack {
-                Text("🎯🎯🎯\nPUT THE BULLSEVE AS CLOSE AS U CAN TO")
-                    .bold()
-                    .kerning(2.0)
-                    .multilineTextAlignment(.center)
-                    .lineSpacing(4.0)
-                    .font(.footnote)
-                Text(String(game.target))
-                    .kerning(-1.0)
-                    .font(.largeTitle)
-                    .fontWeight(.black)
-                
-                HStack {
-                    Text("1")
-                        .bold()
-                    Slider(value: $sliderValue, in:1.0...100)
-                    Text("100")
-                        .bold()
-                }
-                
-                Button(action:{
-                    print("hello")
-                    alertIsVisible = true
-                }) {
-                    Text("Hit me")
-                }
-                .alert(isPresented: $alertIsVisible, content: {
-                    let roundedValue = Int(sliderValue)
-                    return Alert(title: Text("Hello there"), message: Text("The slider value is \(String(roundedValue)).\n" + "you scored \(game.points(sliderValue: roundedValue)) points this round."), dismissButton: .default(Text("Awesome!"))
-                    )
-                })
+                InstructionView(game: $game)
+                SliderStackView(sliderValue: $sliderValue)
+                HitButtonView(alertIsVisible: $alertIsVisible, sliderValue: $sliderValue, game: $game)
             }
         }
     }
 }
 
+struct InstructionView: View {
+    @Binding var game: Game
+    
+    var body: some View {
+        VStack {
+            InstructionTextView(text: "🎯🎯🎯\nPut the Bullseye as close as you can to")
+                .padding(.leading, 30.0)
+                .padding(.trailing, 30.0)
+            BigNumberText(text: String(game.target))
+                .foregroundColor(Color("TextColor"))
+        }
+    }
+}
+
+struct SliderStackView: View {
+    @Binding var sliderValue: Double
+    var body: some View {
+        HStack {
+            SliderLabelText(text: "1")
+            Slider(value: $sliderValue, in:1.0...100)
+            SliderLabelText(text: "100")
+        }
+        .padding()
+    }
+}
+
+struct HitButtonView: View {
+    @Binding var alertIsVisible : Bool
+    @Binding var sliderValue: Double
+    @Binding var game: Game
+    var body: some View {
+        Button(action:{
+            alertIsVisible = true
+        }) {
+            Text("Hit me".uppercased())
+                .bold()
+                .font(.title3)
+        }
+        .padding(20.0)
+        .background(
+            ZStack {
+                Color("ButtonColor")
+                LinearGradient(colors: [Color.white.opacity(0.3), Color.clear], startPoint: .top, endPoint: .bottom)
+            }
+        )
+        .foregroundColor(Color.white)
+        .cornerRadius(21.0)
+        .overlay(
+            RoundedRectangle(cornerRadius: 21.0)
+                .strokeBorder(Color.white, lineWidth: 2.0, antialiased: true)
+        )
+        .alert(isPresented: $alertIsVisible, content: {
+            let roundedValue = Int(sliderValue)
+            return Alert(title: Text("Hello there"), message: Text("The slider value is \(String(roundedValue)).\n" + "you scored \(game.points(sliderValue: roundedValue)) points this round."), dismissButton: .default(Text("Awesome!"))
+            )
+        })
+    }
+}
+
+
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
         ContentView()
+            .preferredColorScheme(.light)
         ContentView()
+            .previewLayout(.fixed(width: 568, height: 320))
+        ContentView()
+            .preferredColorScheme(.dark)
+        ContentView()
+            .preferredColorScheme(.dark)
             .previewLayout(.fixed(width: 568, height: 320))
     }
 }
