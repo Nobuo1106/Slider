@@ -18,13 +18,16 @@ struct ContentView: View {
             VStack {
                 InstructionView(game: $game)
                     .padding(.bottom, alertIsVisible ? 0 : 100)
-                if alertIsVisible {
-                    PointsView(alertIsVisible: $alertIsVisible, sliderValue: $sliderValue, game: $game)
-                } else {
-                    HitButtonView(alertIsVisible: $alertIsVisible, sliderValue: $sliderValue, game: $game)
-                }
                 if !alertIsVisible {
                     SliderStackView(sliderValue: $sliderValue)
+                        .transition(.scale)
+                }
+                if alertIsVisible {
+                    PointsView(alertIsVisible: $alertIsVisible, sliderValue: $sliderValue, game: $game)
+                        .transition(.scale)
+                } else {
+                    HitButtonView(alertIsVisible: $alertIsVisible, sliderValue: $sliderValue, game: $game)
+                        .transition(.scale)
                 }
             }
         }
@@ -63,7 +66,9 @@ struct HitButtonView: View {
     @Binding var game: Game
     var body: some View {
         Button(action:{
-            alertIsVisible = true
+            withAnimation{
+                alertIsVisible = true
+            }
         }) {
             Text("Hit me".uppercased())
                 .bold()
@@ -77,10 +82,10 @@ struct HitButtonView: View {
             }
         )
         .foregroundColor(Color.white)
-        .cornerRadius(21.0)
+        .cornerRadius(Constants.General.roundRectCornerRadius)
         .overlay(
-            RoundedRectangle(cornerRadius: 21.0)
-                .strokeBorder(Color.white, lineWidth: 2.0, antialiased: true)
+            RoundedRectangle(cornerRadius: Constants.General.roundRectCornerRadius)
+                .strokeBorder(Color.white, lineWidth: Constants.General.strokeWidth, antialiased: true)
         )
     }
 }
