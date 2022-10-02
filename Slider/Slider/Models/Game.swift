@@ -7,10 +7,17 @@
 
 import Foundation
 
+struct LeaderboardEntry {
+    let score: Int
+    let date: Date
+    
+}
+
 struct Game {
     var target = Int.random(in: 1..<100)
     var score = 0
     var round = 1
+    var leaderboardEntries: [LeaderboardEntry] = []
     
     func points(sliderValue: Int) -> Int{
         let difference = abs(target - sliderValue)

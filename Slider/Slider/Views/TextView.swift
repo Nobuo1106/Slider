@@ -79,6 +79,41 @@ struct ButtonText: View {
             .cornerRadius(12.0)
     }
 }
+
+struct ScoreText: View {
+    var score: Int
+    var body: some View {
+        Text(String(score))
+            .bold()
+            .kerning(1.0)
+            .foregroundColor(Color("TextColor"))
+            .font(.title3)
+    }
+}
+
+struct DateText: View {
+    var date: Date
+    var body: some View {
+        Text(date, style: .time)
+            .bold()
+            .kerning(1.0)
+            .foregroundColor(Color("TextColor"))
+            .font(.title3)
+    }
+}
+
+struct BigBoldTex: View {
+    let text: String
+    var body: some View {
+        Text(text.uppercased())
+            .kerning(2.0)
+            .foregroundColor(Color("TextColor"))
+            .font(.title)
+            .fontWeight(.black)
+        
+    }
+}
+
 struct InstructionText_Previews: PreviewProvider {
     static var previews: some View {
         VStack {
@@ -88,6 +123,9 @@ struct InstructionText_Previews: PreviewProvider {
             LabelText(text: "9")
             BodyText(text: "You scored 200 points\n🎉🎉🎉")
             ButtonText(text: "Start New Round")
+            ScoreText(score: 459)
+            DateText(date: Date())
+            BigBoldTex(text: "aaaaaaaaa")
         }
         .padding()
     }

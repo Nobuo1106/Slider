@@ -75,4 +75,8 @@ class SliderTests: XCTestCase {
         XCTAssertEqual(game.score, 0)
         XCTAssertEqual(game.round, 1)
     }
+    
+    func testLeaderboard() {
+        
+    }
 }
