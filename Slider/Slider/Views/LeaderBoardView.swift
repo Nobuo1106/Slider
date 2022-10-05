@@ -9,14 +9,23 @@ import SwiftUI
 
 struct LeaderBoardView: View {
     @Binding var leaderboardIsShowing: Bool
+    @Binding var game: Game
+    
     var body: some View {
         ZStack {
             Color("backGroundColor")
             VStack(spacing: 10) {
                 HeaderView(leaderboardIsShowing: $leaderboardIsShowing)
                 LabelView()
-                RowView(index: 1, score: 0, date: Date())
-                
+                ScrollView {
+                    VStack(spacing: 10) {
+                        ForEach(game.leaderboardEntries.indices) { i in
+                            let leaderboardEntry = game.leaderboardEntries[i]
+                            RowView(index: i, score: leaderboardEntry.score, date: leaderboardEntry.date)
+                            
+                        }
+                    }
+                }
             }
         }
     }
@@ -61,6 +70,7 @@ struct HeaderView: View {
                     BigBoldTex(text: "Leaderboard")
                 }
             }
+            .padding(.top)
             HStack {
                 Spacer()
                 Button(action: {
@@ -96,14 +106,15 @@ struct LabelView: View {
 
 struct LeaderBoardView_Previews: PreviewProvider {
     static private var leaderboardIsShowing = Binding.constant(false)
+    static private var game = Binding.constant(Game(loadTestData: true))
     static var previews: some View {
-        LeaderBoardView(leaderboardIsShowing: leaderboardIsShowing)
+        LeaderBoardView(leaderboardIsShowing: leaderboardIsShowing, game: game)
             .preferredColorScheme(.light)
-        LeaderBoardView(leaderboardIsShowing: leaderboardIsShowing)
+        LeaderBoardView(leaderboardIsShowing: leaderboardIsShowing, game: game)
             .previewLayout(.fixed(width: 568, height: 320))
-        LeaderBoardView(leaderboardIsShowing: leaderboardIsShowing)
+        LeaderBoardView(leaderboardIsShowing: leaderboardIsShowing, game: game)
             .preferredColorScheme(.dark)
-        LeaderBoardView(leaderboardIsShowing: leaderboardIsShowing)
+        LeaderBoardView(leaderboardIsShowing: leaderboardIsShowing, game: game)
             .preferredColorScheme(.dark)
             .previewLayout(.fixed(width: 568, height: 320))
     }
